@@ -8,7 +8,9 @@ import BottomNav from '@/components/BottomNav';
 import MapGuide from '@/components/MapGuide';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { TrendingUp, Users, Award, MapPin, List } from 'lucide-react';
+import { TrendingUp, Users, Award, MapPin, List, Share2, Heart, MessageCircle, Clock } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 const Index = () => {
   const [showGuide, setShowGuide] = useState(false);
@@ -53,6 +55,44 @@ const Index = () => {
       openTime: '07:30 - 19:00',
       isLiked: true,
       visitCount: 0
+    }
+  ];
+
+  // Mock data for user shares
+  const userShares = [
+    {
+      id: '1',
+      user: { name: '小美', avatar: 'M' },
+      timestamp: '2小時前',
+      type: 'visit',
+      coffeeshop: '藍瓶咖啡',
+      content: '今天的手沖咖啡真的太棒了！店內環境很舒適，適合工作。',
+      image: '/placeholder.svg',
+      likes: 12,
+      comments: 3,
+      isLiked: false
+    },
+    {
+      id: '2',
+      user: { name: '阿強', avatar: 'A' },
+      timestamp: '4小時前',
+      type: 'route',
+      content: '分享我的週末咖啡路線：大安區精品咖啡巡禮 ☕ 總共造訪了5家店！',
+      likes: 28,
+      comments: 8,
+      isLiked: true
+    },
+    {
+      id: '3',
+      user: { name: '咖啡女孩', avatar: 'C' },
+      timestamp: '6小時前',
+      type: 'review',
+      coffeeshop: 'Fika Fika Cafe',
+      content: '這家的肉桂捲配拿鐵絕配！北歐風裝潢讓人心情很放鬆 🥐',
+      image: '/placeholder.svg',
+      likes: 19,
+      comments: 5,
+      isLiked: false
     }
   ];
 
@@ -124,6 +164,74 @@ const Index = () => {
                   <div className="w-6 h-6 bg-coffee-100 rounded-full flex items-center justify-center text-coffee-600 font-semibold text-xs">
                     +5
                   </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* User Shares Section */}
+            <Card className="border-coffee-200">
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold text-coffee-900">好友動態</h3>
+                  <Button variant="ghost" size="sm" className="text-coffee-600 hover:text-coffee-800">
+                    查看全部
+                  </Button>
+                </div>
+                
+                <div className="space-y-3">
+                  {userShares.map((share) => (
+                    <div key={share.id} className="bg-coffee-25 rounded-lg p-3 border border-coffee-100">
+                      <div className="flex items-start space-x-3">
+                        <Avatar className="h-8 w-8">
+                          <AvatarFallback className="bg-coffee-200 text-coffee-800 text-xs">
+                            {share.user.avatar}
+                          </AvatarFallback>
+                        </Avatar>
+                        
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <span className="text-sm font-medium text-coffee-900">{share.user.name}</span>
+                            <span className="text-xs text-coffee-500">{share.timestamp}</span>
+                          </div>
+                          
+                          {share.coffeeshop && (
+                            <div className="text-xs text-coffee-600 mb-1">
+                              造訪了 <span className="font-medium">{share.coffeeshop}</span>
+                            </div>
+                          )}
+                          
+                          <p className="text-sm text-coffee-700 mb-2 line-clamp-2">
+                            {share.content}
+                          </p>
+                          
+                          {share.image && (
+                            <div className="mb-2">
+                              <img 
+                                src={share.image} 
+                                alt="分享圖片"
+                                className="w-full h-32 object-cover rounded-md"
+                              />
+                            </div>
+                          )}
+                          
+                          <div className="flex items-center space-x-4 text-xs text-coffee-500">
+                            <button className={`flex items-center space-x-1 hover:text-coffee-700 ${share.isLiked ? 'text-red-500' : ''}`}>
+                              <Heart className={`h-3 w-3 ${share.isLiked ? 'fill-current' : ''}`} />
+                              <span>{share.likes}</span>
+                            </button>
+                            <button className="flex items-center space-x-1 hover:text-coffee-700">
+                              <MessageCircle className="h-3 w-3" />
+                              <span>{share.comments}</span>
+                            </button>
+                            <button className="flex items-center space-x-1 hover:text-coffee-700">
+                              <Share2 className="h-3 w-3" />
+                              <span>分享</span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
